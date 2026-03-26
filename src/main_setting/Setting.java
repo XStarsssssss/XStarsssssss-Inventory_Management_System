@@ -58,13 +58,23 @@ public class Setting {
         while (true) {
             System.out.println();
             System.out.println("-------------------------------------------");
-            System.out.println("          LOGIN (Admin or Staff)           ");
+            System.out.println("     LOGIN (Admin or Staff) | (e = Exit)   ");
             System.out.println("-------------------------------------------");
             System.out.print("Username: ");
             String u = sc.nextLine();
 
+            if (u.equalsIgnoreCase("e")) {
+                System.out.println("Exiting program...");
+                System.exit(0);
+            }
+
             System.out.print("Password: ");
             String p = sc.nextLine();
+
+            if (p.equalsIgnoreCase("e")) {
+                System.out.println("Exiting program...");
+                System.exit(0);
+            }
 
             User user = userRepo.authenticate(u, p);
 
@@ -153,7 +163,7 @@ public class Setting {
             case 14 -> productService.salesReport();
             case 15 -> {
                 System.out.println("Logging out...");
-                login();
+                return true;
             }
             default -> System.out.println("Invalid choice!");
         }
@@ -162,6 +172,7 @@ public class Setting {
     }
     //  STAFF MENU
     private boolean staffMenu() {
+        System.out.println();
         System.out.println("-------------------------------------------");
         System.out.println("                 STAFF MENU                ");
         System.out.println("-------------------------------------------");
@@ -227,18 +238,31 @@ public class Setting {
         if (id == intback) {
             Back();
         } else {
-            int qty = getInt("Quantity: ");
+            int qty;
+
+            while (true) {
+                qty = getInt("Quantity: ");
+                if (qty > 0) break;
+                System.out.println("Quantity must be greater than 0!");
+            }
+
             productService.sell(id, qty);
         }
     }
     private void sellProductFlowStaff() {
-        productService.viewProducts();
         System.out.println("If you want to exit enter '0'");
         int id = getInt("Product ID: ");
         if (id == intback) {
-            BackStaff();
+            Back();
         } else {
-            int qty = getInt("Quantity: ");
+            int qty;
+
+            while (true) {
+                qty = getInt("Quantity: ");
+                if (qty > 0) break;
+                System.out.println("Quantity must be greater than 0!");
+            }
+
             productService.sell(id, qty);
         }
     }

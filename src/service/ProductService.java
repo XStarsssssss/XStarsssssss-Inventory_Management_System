@@ -97,6 +97,12 @@ public class ProductService {
 
     // SELL PRODUCT
     public void sell(int id, int qty) {
+
+        if (qty <= 0) {
+            System.out.println("Quantity must be greater than 0!");
+            return;
+        }
+
         Product p = repo.findById(id);
         if (p == null) {
             System.out.println("----------------------------------------");
@@ -104,6 +110,7 @@ public class ProductService {
             System.out.println("----------------------------------------");
             return;
         }
+
         if (p.getQuantity() < qty) {
             System.out.println("----------------------------------------");
             System.out.println("Not enough item!");
@@ -111,23 +118,20 @@ public class ProductService {
             return;
         }
 
-        // Decrease stock
         p.decreaseQuantity(qty);
 
-        // Record sale
         Sale s = new Sale(p, qty);
         sales.add(s);
 
         System.out.printf("\n%-20s %-5s %-10s%n", "Product", "Qty", "Total");
         System.out.println("-----------------------------------------");
 
-        // Sale info
         System.out.printf("%-20s %-5d $%-9.2f%n",
                 p.getName(), qty, s.getProfit());
+
         System.out.println("-----------------------------------------");
         System.out.println("Thank you for supporting our business!");
     }
-
     // SALES REPORT
     public void salesReport() {
         double totalProfit = 0;
